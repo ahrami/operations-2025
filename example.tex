@@ -1,0 +1,58 @@
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{config}
+\addbibresource{example.bib}
+\graphicspath{ {./images/} }
+
+\begin{document}
+
+\include{spbu-titlepage.tex}
+
+\newpage
+\tableofcontents
+
+\section{Деление документа на главы}
+
+Документ делится на главы, которые автоматически нумеруются.
+
+\subsection{Подглавы}
+
+Конечно же главы могут иметь подглавы.
+
+\usection{Главы без нумерации}
+
+Главы без нумерации не влияют на нумерацию глав с нумерацией.
+
+\usubsection{Подглавы без нумерации}
+
+Главы без нумерации также могут иметь подглавы.
+
+Подглавы без нумерации не должны использоваться в итоговой работе.
+Они добавлены лишь для удобства на этапе написания работы.
+
+\section{Изображения}
+
+Можно вставлять картинки
+
+\insertfigure{example}
+{fig:example}
+{Какой-то рисунок}
+
+Ссылаемся на рисунок \ref{fig:example}.
+
+\section{Списки}
+
+Списки:
+
+\begin{enumerate}
+    \item Первый элемент
+    \item Второй элемент
+\end{enumerate}
+
+\section{Работа с источниками}
+
+Ссылаемся на библиографию \cite{aho1974}.
+
+\custombibliography
+
+\end{document}

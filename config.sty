@@ -1,0 +1,219 @@
+\def\optmainfont{Times New Roman}
+\DeclareOption{arial}{\def\optmainfont{Arial}}
+\DeclareOption{times}{\def\optmainfont{Times New Roman}}
+
+\def\optspacing{number}
+\DeclareOption{onehalfspacing}{\def\optspacing{onehalf}}
+\DeclareOption{spacingoneandhalf}{\def\optspacing{number}}
+
+\def\optmargins{spbu}
+\DeclareOption{marginsgeneric}{\def\optmargins{generic}}
+\DeclareOption{marginsspbu}{\def\optmargins{spbu}}
+
+\def\optindent{12.5mm}
+\DeclareOption{noindent}{\def\optindent{0mm}}
+\DeclareOption{smallindent}{\def\optindent{5mm}}
+\DeclareOption{midindent}{\def\optindent{8mm}}
+\DeclareOption{spbuindent}{\def\optindent{12.5mm}}
+
+\def\optlistindent{indent}
+\DeclareOption{listindent}{\def\optlistindent{indent}}
+\DeclareOption{nolistindent}{\def\optlistindent{noindent}}
+\DeclareOption{defaultlistindent}{\def\optlistindent{defaultindent}}
+
+\def\optsectionname{name}
+\DeclareOption{sectionname}{\def\optsectionname{name}}
+\DeclareOption{nosectionname}{\def\optsectionname{noname}}
+
+\def\optsectionnewpage{newpage}
+\DeclareOption{sectionnewpage}{\def\optsectionnewpage{newpage}}
+\DeclareOption{nosectionnewpage}{\def\optsectionnewpage{nonewpage}}
+
+\DeclareOption*{\PackageWarning{examplepackage}{Unknown ‘\CurrentOption’}}
+\ProcessOptions\relax
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\let\phi = \varphi
+\let\epsilon = \varepsilon
+\let\kappa = \varkappa
+
+\def\valspbugeometry{spbu}
+\def\valbettergeometry{generic}
+\ifx\optmargins\valspbugeometry
+    \usepackage[left=30mm,top=20mm,right=15mm,bottom=20mm,nohead,includefoot,footskip=35pt]{geometry}
+\fi
+\ifx\optmargins\valbettergeometry
+    \usepackage[left=20mm,top=20mm,right=20mm,bottom=20mm,nohead,includefoot,footskip=35pt]{geometry}
+\fi
+
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{csquotes}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}
+\setsansfont{Arial}
+\setmainfont{\optmainfont}
+
+\usepackage{setspace}
+\def\valnumberspacing{number}
+\def\valonehalfspacing{onehalf}
+\ifx\optspacing\valnumberspacing
+    \setstretch{1.5}
+\fi
+\ifx\optspacing\valonehalfspacing
+    \onehalfspacing
+\fi
+
+\usepackage{enumitem}
+\def\vallistyesindent{indent}
+\def\vallistnoindent{noindent}
+\def\vallistdefaultindent{defaultindent}
+\ifx\optlistindent\vallistyesindent
+    \setlist{nosep,leftmargin=\optindent+\optindent}
+\fi
+\ifx\optlistindent\vallistnoindent
+    \setlist{nosep,leftmargin=\optindent}
+\fi
+\ifx\optlistindent\vallistdefaultindent
+    \setlist{nosep}
+\fi
+
+\usepackage{indentfirst}
+\setlength\parindent{\optindent}
+
+% titles
+\usepackage{titlesec}
+
+\def\valsectionnewpage{newpage}
+\ifx\optsectionnewpage\valsectionnewpage
+    \let\oldsection\section
+    \renewcommand\section{\clearpage\oldsection}
+\fi
+
+\newcommand{\usection}[1]{
+    \ifx\optsectionnewpage\valsectionnewpage
+        \clearpage
+    \fi
+    \phantomsection
+    \section*{#1}
+    \addcontentsline{toc}{section}{#1}
+}
+
+\newcommand{\usubsection}[1]{
+    \phantomsection
+    \subsection*{#1}
+    \addcontentsline{toc}{subsection}{#1}
+}
+
+\def\valsectionname{name}
+\def\valnosectionname{noname}
+
+\ifx\optsectionname\valsectionname
+    \titleformat{\section}
+    {\fontsize{18pt}{18pt}\bfseries\sffamily\centering}{Глава \thesection.\space}{0pt}{}
+\fi
+\ifx\optsectionname\valnosectionname
+    \titleformat{\section}
+    {\fontsize{18pt}{18pt}\bfseries\sffamily\centering}{\thesection\space}{0pt}{}
+\fi
+
+\titleformat{\subsection}
+{\fontsize{16pt}{16pt}\bfseries\sffamily\centering}{\thesubsection\space}{0pt}{}
+
+\usepackage[labelsep=period,font=small]{caption}
+\captionsetup[figure]{name=Рисунок}
+\setlength{\abovecaptionskip}{14pt plus 2pt minus 2pt}
+\setlength{\belowcaptionskip}{-14pt}
+
+\usepackage{graphicx}
+\newcommand{\insertfigure}[4][1]{
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=#1]{#2}
+        \caption{#4}
+        \label{#3}
+    \end{figure}
+}
+
+\usepackage[titles]{tocloft}
+% \usepackage{titletoc} TODO
+
+% toc title
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\fontsize{18pt}{18pt}\bfseries\sffamily}
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
+
+% toc section
+\ifx\optsectionname\valsectionname
+    \renewcommand{\cftsecpresnum}{Глава\space}
+    \newlength\secspacebeforenum
+    \settowidth\secspacebeforenum{\cftsecpresnum}
+    \addtolength\cftsecnumwidth{\secspacebeforenum}
+\fi
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+
+\setlength{\cftbeforesecskip}{0mm}
+
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+
+% importing other tex files
+\usepackage{import}
+
+% hyperlinks
+\usepackage[colorlinks=false,unicode=true,hidelinks]{hyperref}
+
+% incompatible with biblatex
+% numbering only for referenced equations
+% \usepackage{autonum}
+
+% an alternative to autonum for use with biblatex
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs,showmanualtags}
+
+\newcommand{\custombibliography}{
+    \clearpage
+    \phantomsection
+    \printbibliography[
+        heading=bibintoc,
+        title={Список использованных источников}
+    ]
+}
+
+\usepackage[style=gost-numeric,
+bibencoding=utf8,
+backend=biber,
+language=autobib,
+doi=false,
+url=false,
+isbn=false,
+eprint=false,
+sorting=none,
+autolang=other]{biblatex}
+
+\usepackage{amsthm}
+
+\newtheorem*{theorem*}{\hspace{\optindent}Теорема}
+\newtheorem{theorem}{\hspace{\optindent}Теорема}[section]
+
+% \renewenvironment{proof}{{\textit{Доказательство.}}}{\hspace{5mm}}
+
+\newtheorem*{definition*}{\hspace{\optindent}Определение}
+\newtheorem{definition}{\hspace{\optindent}Определение}[section]
+
+\newtheorem*{remark*}{\hspace{\optindent}Замечание}
+\newtheorem{remark}{\hspace{\optindent}Замечание}[section]
+
+\newtheorem*{corollary*}{\hspace{\optindent}Следствие}
+\newtheorem{corollary}{\hspace{\optindent}Следствие}[theorem]
+\newtheorem{example}{\hspace{\optindent}Пример}[section]
+
+\renewcommand{\emptyset}{\varnothing}

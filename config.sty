@@ -3,10 +3,13 @@
 \DeclareOption{times}{\def\optmainfont{Times New Roman}}
 
 \def\optspacing{number}
+\DeclareOption{singlespacing}{\def\optspacing{single}}
 \DeclareOption{onehalfspacing}{\def\optspacing{onehalf}}
 \DeclareOption{spacingoneandhalf}{\def\optspacing{number}}
 
 \def\optmargins{spbu}
+\DeclareOption{marginstiny}{\def\optmargins{tiny}}
+\DeclareOption{marginssmall}{\def\optmargins{small}}
 \DeclareOption{marginsgeneric}{\def\optmargins{generic}}
 \DeclareOption{marginsspbu}{\def\optmargins{spbu}}
 
@@ -32,20 +35,21 @@
 \DeclareOption*{\PackageWarning{examplepackage}{Unknown ‘\CurrentOption’}}
 \ProcessOptions\relax
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-
-\let\phi = \varphi
-\let\epsilon = \varepsilon
-\let\kappa = \varkappa
-
-\def\valspbugeometry{spbu}
-\def\valbettergeometry{generic}
-\ifx\optmargins\valspbugeometry
+\def\valmarginsspbu{spbu}
+\def\valmarginsgeneric{generic}
+\def\valmarginstiny{small}
+\def\valmarginstiny{tiny}
+\ifx\optmargins\valmarginsspbu
     \usepackage[left=30mm,top=20mm,right=15mm,bottom=20mm,nohead,includefoot,footskip=35pt]{geometry}
 \fi
-\ifx\optmargins\valbettergeometry
+\ifx\optmargins\valmarginsgeneric
     \usepackage[left=20mm,top=20mm,right=20mm,bottom=20mm,nohead,includefoot,footskip=35pt]{geometry}
+\fi
+\ifx\optmargins\valmarginssmall
+    \usepackage[left=15mm,top=15mm,right=15mm,bottom=15mm,nohead,includefoot,footskip=35pt]{geometry}
+\fi
+\ifx\optmargins\valmarginstiny
+    \usepackage[left=10mm,top=10mm,right=10mm,bottom=10mm,nohead,includefoot,footskip=35pt]{geometry}
 \fi
 
 \usepackage{cmap}
@@ -62,11 +66,15 @@
 \usepackage{setspace}
 \def\valnumberspacing{number}
 \def\valonehalfspacing{onehalf}
+\def\valsinglespacing{onehalf}
 \ifx\optspacing\valnumberspacing
     \setstretch{1.5}
 \fi
 \ifx\optspacing\valonehalfspacing
     \onehalfspacing
+\fi
+\ifx\optspacing\valsinglespacing
+    \singlespacing
 \fi
 
 \usepackage{enumitem}
@@ -216,4 +224,10 @@ autolang=other]{biblatex}
 \newtheorem{corollary}{\hspace{\optindent}Следствие}[theorem]
 \newtheorem{example}{\hspace{\optindent}Пример}[section]
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\let\phi = \varphi
+\let\epsilon = \varepsilon
+\let\kappa = \varkappa
 \renewcommand{\emptyset}{\varnothing}

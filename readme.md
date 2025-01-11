@@ -14,11 +14,14 @@ You can use `latexmk`.
 
 1. `spacingoneandhalf` - set spacing with `\setstretch{1.5}` (default)
 2. `onehalfspacing` - set spacing with `\onehalfspacing`
+3. `singlespacing` - set spacing with `\singlespacing`
 
 ## Page Margins
 
 1. `marginsspbu` - margins for SPBU documents (default)
 2. `marginsgeneric` - symmetrical 2cm margins
+3. `marginssmall` - symmetrical 1.5cm margins
+4. `marginstiny` - symmetrical 1cm margins
 
 ## Paragraph Indent
 
